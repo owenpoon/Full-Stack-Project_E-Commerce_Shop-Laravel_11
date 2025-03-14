@@ -1,0 +1,25 @@
+1, Environment Set-up on Visual Studio Code
+To install an extension : Laravel Blade Snippets 
+
+2. To import external files on app.blade.php 
+--> <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
+--> <img src="{{ asset('assets/images/logo.png') }}" />
+--> <script src="{{ asset('assets/js/app.js') }}"></script>
+
+--> Add @stack("styles") on <head></head>
+--> Add @stack("scripts") on the bottom of <body></body>
+
+3. To allow a template, which defines its own sections etc
+--> @extends('/*layouts.app -- which means the app.blade,php inside the "layouts" folder*/')
+    @section('/*header*/')
+	...
+    @endsection
+
+4. To extend a template that is defined with its own sections
+--> <html>
+      <body>
+	   ...
+        *@yield('header')
+	   ...
+      </body>
+    </html>

@@ -1,0 +1,20 @@
+1. Install Package for Project:
+composer create-project laravel/laravel (eshop) "11.*" --> cd (eshop)
+
+2. Install Vite:
+npm install vite --save-dev --> npm install -g vite
+
+3. Generate assets of css/js documents:
+npm run build
+
+3.1 Install UI Plugins:
+composer require laravel/ui
+
+3.2 Install Boostrap (Auth) Plugins:
+php artisan ui bootstrap --auth 
+
+4. Create Databse:
+php artisan migrate  
+
+5. Launch Project:
+php artisan serve
