@@ -18,3 +18,16 @@ php artisan migrate
 
 5. Launch Project:
 php artisan serve
+
+6. Refresh Update Programs:
+php artisan migrate:refresh
+
+7. Create AuthAdmin.php for Middleware:
+php artisan make:middleware AuthAdmin
+
+8. Create AdminController & UserController.php for Controller:
+php artisan make:controller AdminController -->
+php artisan make:controller UserController
+
+
+

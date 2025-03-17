@@ -23,3 +23,73 @@ To install an extension : Laravel Blade Snippets
 	   ...
       </body>
     </html>
+
+5. To edit AuthAdmin.php
+--> use Illuminate\Support\Facades\Auth; /* To import Auth */
+
+--> public function handle(Request $request, Closure $next): Response{
+        if(Auth::check()){
+            if(Auth::user()->utype==='ADM'){
+                return $next($request);
+            }
+            else {
+                Session::flush();
+                return redirect()->route('login');
+            }
+        }
+        else {
+            return redirect()->route('login');
+        }
+    }
+
+6. To create admin & user folders to add index.blade.php
+--> @extends('layouts.app')  /* admin/index.blade.php */
+    @section('content')
+    	<h1>Admin Dashboard</h1>
+    @endsection
+
+--> @extends('layouts.app')  /* user/index.blade.php */
+    @section('content')
+    	<h1>User Dashboard</h1>
+    @endsection
+
+7. To edit web.php to add route path
+--> use App\Http\Controllers\UserController;
+    use App\Http\Controllers\AdminController;
+    use App\Http\Middleware\AuthAdmin;
+
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+    Route::middleware(['auth'])->group(function(){
+    	Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+    });
+
+    Route::middleware(['auth', AuthAdmin::class])->group(function(){
+    	Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    });
+
+8. To edit app.blade.php by adding route to login-page (Admin/User) & register-page
+--> @guest
+
+    <div class="header-tools__item hover-container">
+       <a href="{{route('login')}}" class="header-tools__item">
+          <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+             <use href="#icon_user" />
+          </svg>
+       </a>
+    </div>
+              
+    @else // After logged-in & registered
+
+    <div class="header-tools__item hover-container">
+       <a href="{{ Auth::user()->utype === 'ADM' ? route('admin.index'): route('user.index')  }}" class="header-tools__item">
+          <span class="pr-6px">{{Auth::user()->name}}</span>
+          <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+             <use href="#icon_user" />
+          </svg>
+       </a>
+    </div>
+              
+    @endguest
