@@ -93,3 +93,327 @@ To install an extension : Laravel Blade Snippets
     </div>
               
     @endguest
+
+9. To edit admin/index.blade.php 
+
+   @extends('layouts.admin')
+   @section('content')
+
+   <div class="main-content-inner">
+
+   	/* Add Template */
+
+   </div>
+
+   @endsection
+
+10. To create admin.blade.php in /layouts & edit the below contents
+
+    <div class="box-logo">
+       <a href="{{route('admin.index')}}" id="site-logo-inner">
+          <img class="" id="logo_header" alt="" src="images/logo/logo.png"
+           data-light="images/logo/logo.png" data-dark="images/logo/logo.png">
+       </a>
+       <div class="button-show-hide">
+          <i class="icon-menu-left"></i>
+       </div>
+    </div>
+
+	...
+
+    <div class="center-item">
+       <div class="center-heading">Main Home</div>
+          <ul class="menu-list">
+              <li class="menu-item">
+                 <a href="{{route('admin.index')}}" class="">
+                    <div class="icon"><i class="icon-grid"></i></div>
+                    <div class="text">Dashboard</div>
+                 </a>
+              </li>
+          </ul>
+    </div>
+
+	...
+
+    <div class="main-content">
+
+       @yield('content')
+
+       <div class="bottom-page">
+          <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+       </div>
+
+    </div>
+	
+	...
+
+    <li class="menu-item">
+        <form action="{{route('logout')}}" method="POST" id="logout-form">
+           @csrf
+           <a href="{{route('logout')}}" class="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+               <div class="icon"><i class="icon-settings"></i></div>
+               <div class="text">Logout</div>
+           </a>
+        </form>
+    </li>
+ 
+11. To edit user/index.blade.php
+    
+    @extends('layouts.app')
+    @section('content')
+
+    <main class="pt-90">
+    	<div class="mb-4 pb-4"></div>
+    	<section class="my-account container">
+      		<h2 class="page-title">My Account</h2>
+      	<div class="row">
+        	<div class="col-lg-3">
+          	    @include('user.account-nav') //Import from another blade.php
+        	</div>
+        	<div class="col-lg-9">
+          	    <div class="page-content my-account__dashboard">
+            		<p>Hello <strong>User</strong></p>
+            		<p>From your account dashboard you can view your <a class="unerline-link" href="account_orders.html">recent
+                	   orders</a>, manage your <a class="unerline-link" href="account_edit_address.html">shipping
+                	   addresses</a>, and <a class="unerline-link" href="account_edit.html">edit your password and account
+                	   details.</a>
+			</p>
+          	    </div>
+        	</div>
+       </div>
+       </section>
+    </main>
+
+    @endsection
+
+12. To create and add template on account-nav.blade.php
+
+    <ul class="account-nav">
+    	<li><a href="{{route('user.index')}}" class="menu-link menu-link_us-s">Dashboard</a></li>
+    	<li><a href="account-orders.html" class="menu-link menu-link_us-s">Orders</a></li>
+    	<li><a href="account-address.html" class="menu-link menu-link_us-s">Addresses</a></li>
+    	<li><a href="account-details.html" class="menu-link menu-link_us-s">Account Details</a></li>
+    	<li><a href="account-wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li>
+    
+    	<li>
+            <form action="{{route('logout')}}" method="POST" id="logout-form">
+            	@csrf
+            	<a href="{{route('logout')}}" class="menu-link menu-link_us-s" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            </form>
+        </li>
+    </ul>
+
+13. To change layout and add functionality on login.blade.php
+
+--> @extends('layouts.app')
+
+--> @section('content')
+
+	<main class="pt-90">
+
+    		<div class="mb-4 pb-4"></div>
+
+    		<section class="login-register container">
+      			<ul class="nav nav-tabs mb-5" id="login_register" role="tablist">
+        			<li class="nav-item" role="presentation">
+          			<a class="nav-link nav-link_underscore active" id="login-tab" data-bs-toggle="tab" href="#tab-item-login"
+            			 role="tab" aria-controls="tab-item-login" aria-selected="true">Login</a>
+        			</li>
+      			</ul>
+
+      			<div class="tab-content pt-2" id="login_register_tab_content">
+        			<div class="tab-pane fade show active" id="tab-item-login" role="tabpanel" aria-labelledby="login-tab">
+          				<div class="login-form">
+           			 		<form method="POST" action="{{route('login')}}" name="login-form" class="needs-validation" novalidate="">
+                				 @csrf
+              					 <div class="form-floating mb-3">
+                					<input class="form-control form-control_gray @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required="" autocomplete="email" autofocus="">
+                						<label for="email">Email address *</label>
+                					 	 @error('email')
+                    						<span class="invalid-feedback" role="alert">
+                        						<strong>{{ $message }}</strong>
+                    						</span>
+                						@enderror
+
+              					 </div>
+
+              		<div class="pb-3"></div>
+
+              		<div class="form-floating mb-3">
+
+                		<input id="password" type="password" class="form-control form-control_gray " name="password" required=""
+                  	 	 autocomplete="current-password">
+
+                		<label for="customerPasswodInput">Password *</label>
+                		@error('password')
+                    		<span class="invalid-feedback" role="alert">
+                        		<strong>{{ $message }}</strong>
+                    		</span>
+                		@enderror
+
+              		</div>
+
+              <button class="btn btn-primary w-100 text-uppercase" type="submit">Log In</button>
+
+              <div class="customer-option mt-4 text-center">
+                <span class="text-secondary">No account yet?</span>
+                <a href="{{route('register')}}" class="btn-text js-show-register">Create Account</a> 
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+  
+@endsection
+
+14. To change layout and add functionality on register.blade.php
+
+--> @extends('layouts.app')
+
+--> @section('content')
+
+    <main class="pt-90">
+    	<div class="mb-4 pb-4"></div>
+    		<section class="login-register container">
+      			<ul class="nav nav-tabs mb-5" id="login_register" role="tablist">
+        			<li class="nav-item" role="presentation">
+          			<a class="nav-link nav-link_underscore active" id="register-tab" data-bs-toggle="tab"
+            			 href="#tab-item-register" role="tab" aria-controls="tab-item-register" aria-selected="true">Register</a>
+        			</li>
+      			</ul>
+
+      			<div class="tab-content pt-2" id="login_register_tab_content">
+        			<div class="tab-pane fade show active" id="tab-item-register" role="tabpanel" aria-labelledby="register-tab">
+          				<div class="register-form">
+            					<form method="POST" action="{{ route('register') }}" name="register-form" class="needs-validation" novalidate="">
+                				 @csrf
+              					 <div class="form-floating mb-3">
+                					<input class="form-control form-control_gray @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required="" autocomplete="name"
+                  					 autofocus="">
+                						<label for="name">Name</label>
+                						 @error('name')
+                    							<span class="invalid-feedback" role="alert">
+                        							<strong>{{ $message }}</strong>
+                    							</span>
+                						 @enderror
+              					 </div>
+
+             					 <div class="pb-3"></div>
+              					 <div class="form-floating mb-3">
+                					<input id="email" type="email" class="form-control form-control_gray @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required=""
+                  					 autocomplete="email">
+                						<label for="email">Email address *</label>
+                						@error('email')
+                    							<span class="invalid-feedback" role="alert">
+                        							<strong>{{ $message }}</strong>
+                    							</span>
+                						@enderror
+              					 </div>
+
+              					 <div class="pb-3"></div>
+
+              					 <div class="form-floating mb-3">
+                					<input id="mobile" type="text" class="form-control form-control_gray @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}"
+                 					 required="" autocomplete="mobile">
+                						<label for="mobile">Mobile *</label>
+                						 @error('mobile')
+                    							<span class="invalid-feedback" role="alert">
+                        							<strong>{{ $message }}</strong>
+                    							</span>
+                						 @enderror
+              					 </div>
+
+              					 <div class="pb-3"></div>
+
+              					 <div class="form-floating mb-3">
+                					<input id="password" type="password" class="form-control form-control_gray @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}"
+                  					 autocomplete="new-password">
+                						<label for="password">Password *</label>
+                						 @error('password')
+                    							<span class="invalid-feedback" role="alert">
+                        							<strong>{{ $message }}</strong>
+                    							</span>
+                						 @enderror
+              					 </div>
+
+              					 <div class="form-floating mb-3">
+                					<input id="password-confirm" type="password" class="form-control form-control_gray"
+                  					 name="password_confirmation" required="" autocomplete="new-password">
+                						<label for="password">Confirm Password *</label>
+              					 </div>
+
+              					 <div class="d-flex align-items-center mb-3 pb-2">
+                					<p class="m-0">Your personal data will be used to support your experience throughout this website, to
+                  					 manage access to your account, and for other purposes described in our privacy policy.</p>
+              					 </div>
+
+              					 <button class="btn btn-primary w-100 text-uppercase" type="submit">Register</button>
+
+              					 <div class="customer-option mt-4 text-center">
+                					<span class="text-secondary">Have an account?</span>
+                					<a href="{{ route('login') }}" class="btn-text js-show-register">Login to your Account</a>
+              					 </div>
+
+            					</form>
+          				</div>
+        			</div>
+      			</div>
+
+    	</section>
+
+    </main>
+  
+@endsection
+
+15. To modify on 0001_01_01_000000_create_users_table.php
+
+--> Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+
+            $table->string('mobile')->unique(); /*Add mobile*/
+
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->string('utype')->default('USR')->comment('ADM for admin & USR for User or Customer');
+            $table->rememberToken();
+            $table->timestamps();
+    });
+
+16. To modify on User.php
+
+--> protected $fillable = [
+        'name',
+        'email',
+        'mobile', /*Add mobile*/
+        'password',
+    ];
+
+11. To modify on RegisterController.php
+
+--> protected function validator(array $data){
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'mobile' => ['required', 'digits:10', 'unique:users'], /*Add mobile*/
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    }
+
+--> protected function create(array $data){
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'mobile' => $data['mobile'],  /*Add mobile*/
+            'password' => Hash::make($data['password']),
+        ]);
+    }

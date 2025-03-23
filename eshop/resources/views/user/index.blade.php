@@ -20,6 +20,6 @@
         </div>
       </div>
     </section>
-  </main>
+</main>
 
 @endsection

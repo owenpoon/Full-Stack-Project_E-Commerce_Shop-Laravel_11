@@ -29,5 +29,5 @@ php artisan make:middleware AuthAdmin
 php artisan make:controller AdminController -->
 php artisan make:controller UserController
 
-
+9. 
 
