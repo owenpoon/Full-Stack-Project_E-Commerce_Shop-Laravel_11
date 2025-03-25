@@ -13,7 +13,7 @@ composer require laravel/ui
 3.2 Install Boostrap (Auth) Plugins:
 php artisan ui bootstrap --auth 
 
-4. Create Databse:
+4. Create / Update Databse:
 php artisan migrate  
 
 5. Launch Project:
@@ -29,5 +29,8 @@ php artisan make:middleware AuthAdmin
 php artisan make:controller AdminController -->
 php artisan make:controller UserController
 
-9. 
+9. Create Brand.php & create_brands_table.php
+php artisan make:model Brand -m
+
+10. 
 
