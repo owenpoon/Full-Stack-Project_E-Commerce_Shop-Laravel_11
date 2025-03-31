@@ -32,5 +32,6 @@ php artisan make:controller UserController
 9. Create Brand.php & create_brands_table.php
 php artisan make:model Brand -m
 
-10. 
+10. Re-install Composer plugins & Update
+composer install -> composer update
 

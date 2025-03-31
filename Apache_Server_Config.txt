@@ -1,0 +1,5 @@
+1. To modify and remove some ; on php.ini 
+
+--> extension=gd
+
+--> extension=zip
