@@ -1,4 +1,4 @@
-1. To modify and remove some ; on php.ini 
+1. To modify and remove some ; on php.ini before starting project
 
 --> extension=gd
 

@@ -585,13 +585,13 @@ To install an extension : Laravel Blade Snippets
     	}
     }
 
-18. To add the route for admin to view pages on web.php
+18. To add the route of brand-store for admin to view pages on web.php
 
 --> Route::middleware(['auth', AuthAdmin::class])->group(function(){
     	Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     	Route::get('/admin/brands', [AdminController::class, 'brands'])->name('admin.brands');
     	Route::get('/admin/brand/add', [AdminController::class, 'add_brand'])->name('admin.brand.add');  // Add add-brand
-        Route::post('/admin/brand/store', [AdminController::class, 'brand_store'])->name('admin.brand.store');  // Add brand-store
+    --> Route::post('/admin/brand/store', [AdminController::class, 'brand_store'])->name('admin.brand.store');  // Add brand-store
     });
 
 19. To create brands-add.blade.php and edit layout
@@ -808,6 +808,139 @@ To install an extension : Laravel Blade Snippets
 	...
     </table>
 
-24. 
+24. To add the route of brand-store for admin to view pages on web.php
 
+--> Route::middleware(['auth', AuthAdmin::class])->group(function(){
+    	Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    	Route::get('/admin/brands', [AdminController::class, 'brands'])->name('admin.brands');
+    	Route::get('/admin/brand/add', [AdminController::class, 'add_brand'])->name('admin.brand.add');  
+     	Route::post('/admin/brand/store', [AdminController::class, 'brand_store'])->name('admin.brand.store');  
+    --> Route::get('/admin/brand/edit/{id}', [AdminController::class, 'brand_edit'])->name('admin.brand.edit'); // Edit-Brand
+    });
+
+25. To create & edit brand-edit.blade.php 
+
+    --> @extends('layouts.admin')  // Copy all codes of brand-add.blade.php
+	@section('content')
+
+	<div class="main-content-inner">
+    		...
+        </div>
+        <!-- new-category -->
+        <div class="wg-box">
+            <form class="form-new-product form-style-1" action="{{route('admin.brand.update')}}" method="POST"  // Edit Route
+                enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="id" value={{$brand->id}} /> // Add 
+                <fieldset class="name">
+                    <div class="body-title">Brand Name <span class="tf-color-1">*</span></div>
+                    <input class="flex-grow" type="text" placeholder="Brand name" name="name"
+                        tabindex="0" value="{{$brand->name}}" aria-required="true" required="">  // Change Value
+                </fieldset>
+                @error('name') <span class="alert alert-danger text-center">{{$message}}</span> @enderror
+
+                <fieldset class="name">
+                    <div class="body-title">Brand Slug <span class="tf-color-1">*</span></div>
+                    <input class="flex-grow" type="text" placeholder="Brand Slug" name="slug"
+                        tabindex="0" value="{{$brand->slug}}" aria-required="true" required="">  // Change Value
+                </fieldset>
+                @error('slug') <span class="alert alert-danger text-center">{{$message}}</span> @enderror
+
+                <fieldset>
+                    <div class="body-title">Upload images <span class="tf-color-1">*</span>
+                    </div>
+                    <div class="upload-image flex-grow">
+
+                        @if($brand->image) // Add if program
+                        <div class="item" id="imgpreview">
+                            <img src="{{asset('uploads/brands')}}/{{$brand->image}}" class="effect8" alt="">
+                        </div>
+                        @endif
+
+                        <div id="upload-file" class="item up-load">
+                            ...
+                        </div>
+
+                    </div>
+                </fieldset>
+                @error('image') <span class="alert alert-danger text-center">{{$message}}</span> @enderror
+
+                <div class="bot">
+                    <div></div>
+                    <button class="tf-button w208" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@endsection
+
+@push('scripts')
+
+    ...
+
+@endpush
+
+
+26. To modify brands.blade.php 
+
+    --> <div class="list-icon-function">
+           <a href="{{route('admin.brand.edit',['id'=>$brand->id])}}">  // Add Route
+              <div class="item edit">
+                 <i class="icon-edit-3"></i>
+              </div>
+           </a>
+           <form action="#" method="POST">
+              <div class="item text-danger delete">
+                 <i class="icon-trash-2"></i>
+              </div>
+           </form>
+        </div>
+
+
+27. To Add functionality on AdminController.php
+
+    --> use Illuminate\Http\Request;
+	use Illuminate\Support\Str;
+	use App\Models\Brand;
+	use Carbon\Carbon;
+	use Intervention\Image\Laravel\Facades\Image;
+
+	--> use Illuminate\Support\Facades\File;  //Add plugin
+
+	public function brand_edit($id){  // Add Function
+        	$brand = Brand::find($id);
+        	return view('admin.brand-edit',compact('brand'));   
+    	}
+
+   	public function brand_update(Request $request){
+        	$request->validate([ 
+            		'name' => 'required',
+            		'slug' => 'required|unique:brands,slug, '.$request->id,
+            		'image' => 'mimes:png,jpg,jpeg,svg|max:10000'
+        	]);
+
+       		$brand = Brand::find($request->id);
+        	$brand->name = $request->name;
+        	$brand->slug = Str::slug($request->name);
+
+        	if ($request->hasFile('image')) {
+            		if (File::exists(public_path('uploads/brands').'/'.$brand->image)) {
+                		File::delete(public_path('uploads/brands').'/'.$brand->image);
+            		}
+
+            	$image = $request->file('image');
+            	$file_extention = $request->file('image')->extension();
+            	$file_name = Carbon::now()->timestamp.'.'.$file_extention; 
+            	$this->GenerateBrandThumbailsImage($image, $file_name);
+            	$brand->image = $file_name;
+        }
+	
+        $brand->save();
+        return redirect()->route('admin.brands')->with('status', 'Brand has been updated successfully!');
+    }
+
+28. 
 
