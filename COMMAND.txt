@@ -35,3 +35,7 @@ php artisan make:model Brand -m
 10. Re-install Composer plugins & Update
 composer install -> composer update
 
+11. Create Category.php & Categories_table.php
+php artisan make:model Category -m
+
+
