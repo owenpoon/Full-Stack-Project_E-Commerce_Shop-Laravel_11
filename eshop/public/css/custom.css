@@ -53,6 +53,13 @@ body {
     vertical-align: middle;
 }
 
+.pname .pimage{
+    width: auto !important; height: auto;
+}
+.pname .pimage img{
+    margin-right: 8px;
+}
+
 .table-striped .image {
     display: flex;
     align-items: center;
