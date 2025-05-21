@@ -1,0 +1,40 @@
+1. Install Package for Project:
+composer create-project laravel/laravel (eshop) "11.*" --> cd (eshop)
+
+2. Install Vite:
+npm install vite --save-dev --> npm install -g vite
+
+3. Generate assets of css/js documents:
+npm run build
+
+3.1 Install UI Plugins:
+composer require laravel/ui
+
+3.2 Install Boostrap (Auth) Plugins:
+php artisan ui bootstrap --auth 
+
+4. Create / Update Databse:
+php artisan migrate  
+
+5. Launch Project:
+php artisan serve
+
+6. Refresh Update Programs:
+php artisan migrate:refresh
+
+7. Create AuthAdmin.php for Middleware:
+php artisan make:middleware AuthAdmin
+
+8. Create AdminController & UserController.php for Controller:
+php artisan make:controller AdminController -->
+php artisan make:controller UserController
+
+9. Create Brand.php & create_brands_table.php
+php artisan make:model Brand -m
+
+10. Re-install Composer plugins & Update
+composer install -> composer update
+
+11. Create Category.php & Categories_table.php
+php artisan make:model Category -m
+
